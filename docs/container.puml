@@ -12,7 +12,7 @@ System_Ext(cinema_sys, "Онлайн-кинотеатры", "Внешний по
 System_Ext(billing_sys, "Платежная система", "Внешняя платежная система. отвечающая за обработку платежей")
 
 Container_Boundary(Cinemaabyss, "Кинобездна",) {
-    Container(api_gtw, "ApiGateway", "NGINX", "API Gateway - отвечает за единную точку входа для запросов")
+    Container(api_gtw, "ApiGateway", "NodeJS, TypeScript", "API Gateway - отвечает за единную точку входа для запросов")
     Container(user, "User", "Python", "Логин/регистрация пользователя")
     Container(movies, "Movies", "Go", "Управление каталогом фильмов, метаданными, жанрами, отзывами и рейтингами. Получение параметров воспроизведения от внешних поставщиков")
     Container(recomendation, "Recomendation", "Go", "Отвечает за работу с внешней рекомендательной системой и создания собственных подборок")

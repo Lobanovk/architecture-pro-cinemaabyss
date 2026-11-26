@@ -281,6 +281,14 @@ cat .docker/config.json | base64
 #### Шаг 3
 Добавьте сюда скриншота вывода при вызове https://cinemaabyss.example.com/api/movies и  скриншот вывода event-service после вызова тестов.
 
+#### Решние
+- Вызов https://cinemaabyss.example.com/api/movies
+![Вызов https://cinemaabyss.example.com/api/movies](./assests/Снимок%20экрана —%202026-11-26%20в 14.45.22.png)
+- Логи event-service
+![Логи event-service](./assests/Снимок%20экрана —%202026-11-26%20в 14.46.24.png)
+- Прогон тестов npm run test:kubernetes
+![Прогон тестов npm run test:kubernetes](./assests/Снимок%20экрана —%202026-11-26%20в 14.45.01.png)
+
 
 ## Задание 4
 Для простоты дальнейшего обновления и развертывания вам как архитектуру необходимо так же реализовать helm-чарты для прокси-сервиса и проверить работу 

@@ -1,0 +1,58 @@
+@startuml
+title Cinemaabyss Container Diagram
+
+top to bottom direction
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(person, "Пользователь", "Просматривает контент со своего утройства(ноутбук, планшет, телефон, смартТВ)")
+System(Cinemaabyss, "Кинобездна", "Онлайн-кинотеатр - агрегатор.")
+System_Ext(recomendation_sys, "Рекомендательная система", "Внешняя рекомендательная система, которая делает подборку")
+System_Ext(cinema_sys, "Онлайн-кинотеатры", "Внешний поставщик фильмов для просмотра")
+System_Ext(billing_sys, "Платежная система", "Внешняя платежная система. отвечающая за обработку платежей")
+
+Container_Boundary(Cinemaabyss, "Кинобездна",) {
+    Container(api_gtw, "ApiGateway", "NodeJS, TypeScript", "API Gateway - отвечает за единную точку входа для запросов")
+    Container(user, "User", "Python", "Логин/регистрация пользователя")
+    Container(movies, "Movies", "Go", "Управление каталогом фильмов, метаданными, жанрами, отзывами и рейтингами. Получение параметров воспроизведения от внешних поставщиков")
+    Container(recomendation, "Recomendation", "Go", "Отвечает за работу с внешней рекомендательной системой и создания собственных подборок")
+    ContainerQueue(broker, "Message Broker", "Kafka", "Доставка событий между сервисами")
+    Container(events, "Events Service", "NodeJs", "Обрабатывает коммуникацию между сервисами на основе событий(фильмов, пользователей, платежей)")
+    Container(subscription, "Subscription", "NodeJs", "Управление подписками")
+    Container(billing, "Billing", "Go", "Проведение платежей, управление скидками, история и статусы платежей, интеграция с платежными провайдерами и публикация событий об оплате")
+
+    ContainerDb(user_db, "UserDatabase", "PostgreSQL", "Хранит пользователей")
+    ContainerDb(movies_db, "MoviesDatabase", "PostgreSQL", "Хранит метаданные о фильме, рейтинге. жанре и т.д.")
+    ContainerDb(subscription_db, "SubscriptionDatabase", "PostgreSQL", "Хранит данные о подписках")
+    ContainerDb(billing_db, "BillingDatabase", "PostgreSQL", "Хранит данные о платежах")
+    ContainerDb(recomendation_db, "RecomendationDatabase","PostgreSQL", "Хранит данные о пользовательских подборках")
+}
+
+
+Rel(person, api_gtw, "Логин/регистрация. Просмотр информации о фильме, проставление оценок, добавление фильма в избранное и оплата подписок")
+Rel(person, cinema_sys, "Просмотр видеопотока напрямую по полученному URL")
+
+Rel(api_gtw, subscription, "Управление подписками и проверка права на просмотр фильма")
+Rel(api_gtw, movies, "Получение метаданных и параметров воспроизведения после проверки доступа")
+Rel(api_gtw, events, "HTTP-запрос на создание события пользователя и системы")
+BiRel(events, broker, "Отправка и чтение событий пользователя и системы")
+Rel(api_gtw, user, "Логин, регистрация, управление пользователями")
+Rel(api_gtw, recomendation, "Получение подборок и рекомендаций")
+Rel(subscription, billing, "Создание платежа")
+BiRel(billing, billing_sys, "Создание и проверка платежа. Потдверждение платежа")
+
+Rel(billing, broker, "Публикует событие об успешном/провальном платеже")
+Rel(subscription, broker, "Читает событие об оплате")
+
+Rel(recomendation, recomendation_sys, "Взаимодейтсвие с внешней рекомендательной системой")
+
+Rel(movies, cinema_sys, "Получение URL/токена для воспроизведения фильма")
+
+
+BiRel(user, user_db, "Чтение/запись данных", "SQL")
+BiRel(movies, movies_db, "Чтение/запись данных", "SQL")
+BiRel(subscription, subscription_db, "Чтение/запись данных", "SQL")
+BiRel(billing, billing_db, "Чтение/запись данных", "SQL")
+BiRel(recomendation, recomendation_db, "Чтение/запись данных", "SQL")
+
+@enduml

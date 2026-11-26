@@ -5,7 +5,8 @@
 1. Спроектируйте to be архитектуру КиноБездны, разделив всю систему на отдельные домены и организовав интеграционное взаимодействие и единую точку вызова сервисов.
 Результат представьте в виде контейнерной диаграммы в нотации С4.
 Добавьте ссылку на файл в этот шаблон
-[ссылка на файл](ссылка)
+
+[Диаграмма контейнеров](/docs/container.puml)
 
 
 ## Задание 2
@@ -58,6 +59,12 @@
 
 Необходимые тесты для проверки этого API вызываются при запуске npm run test:local из папки tests/postman 
 Приложите скриншот тестов и скриншот состояния топиков Kafka http://localhost:8090 
+
+#### Скриншоты тестов 
+![alt text](./assests/Снимок%20экрана —%202026-11-25%20в 19.18.39.png)
+
+#### Топики в Kafka
+![alt text](./assests/Снимок%20экрана —%202026-11-25%20в 19.19.15.png)
 
 
 ## Задание 3
@@ -274,6 +281,14 @@ cat .docker/config.json | base64
 #### Шаг 3
 Добавьте сюда скриншота вывода при вызове https://cinemaabyss.example.com/api/movies и  скриншот вывода event-service после вызова тестов.
 
+#### Решние
+- Вызов https://cinemaabyss.example.com/api/movies  
+![Вызов https://cinemaabyss.example.com/api/movies](./assests/Снимок%20экрана —%202026-11-26%20в 14.45.22.png)  
+- Логи event-service  
+![Логи event-service](./assests/Снимок%20экрана —%202026-11-26%20в 14.46.24.png)  
+- Прогон тестов npm run test:kubernetes  
+![Прогон тестов npm run test:kubernetes](./assests/Снимок%20экрана —%202026-11-26%20в 14.45.01.png)  
+
 
 ## Задание 4
 Для простоты дальнейшего обновления и развертывания вам как архитектуру необходимо так же реализовать helm-чарты для прокси-сервиса и проверить работу 
@@ -349,6 +364,12 @@ minikube tunnel
 https://cinemaabyss.example.com/api/movies
 и приложите скриншот развертывания helm и вывода https://cinemaabyss.example.com/api/movies
 
+#### Решение
+Скриншот развертывания helm  
+![alt text](./assests/Снимок%20экрана —%202026-11-26%20в 19.17.36.png)  
+Вывод https://cinemaabyss.example.com/api/movies  
+![alt text](./assests/Снимок%20экрана —%202026-11-26%20в 19.23.34.png)  
+
 
 # Задание 5
 Компания планирует активно развиваться и для повышения надежности, безопасности, реализации сетевых паттернов типа Circuit Breaker и канареечного деплоя вам как архитектору необходимо развернуть istio и настроить circuit breaker для monolith и movies сервисов.
@@ -422,3 +443,6 @@ kubectl delete namespace istio-system
 kubectl delete all --all -n cinemaabyss
 kubectl delete namespace cinemaabyss
 ```
+
+#### Решение
+![alt text](./assests/Снимок%20экрана —%202026-11-26%20в 20.19.21.png)
